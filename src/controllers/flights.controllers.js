@@ -1,9 +1,10 @@
-export async function getFlights(req, res) {
+async function create() {
     const page = res.locals.page;
 
 }
 
-
-export async function postFlight(req, res) {
+async function allFlights() {
 
 }
+
+export const flightsController = { allFlights, create}

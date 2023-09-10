@@ -1,9 +1,11 @@
-export async function getTravels(req, res) {
+async function getTravels() {
     const page = res.locals.page;
 
 }
 
-export async function postPassenger(req, res) {
+async function create(firstName, lastName) {
 
 
 }
+
+export const passengersController = {create, getTravels}
