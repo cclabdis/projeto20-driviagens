@@ -17,30 +17,28 @@ async function exists(value, id) {
     return result.rows[0].count > 0;
 }
 
-
-
-// async function allFlights() {
-//     const { rows } = await db.query(
-//         `SELECT * FROM flights;`
-//     )
-//     return rows
-// }
-
-
-async function filterFlights(queryParams) {
-    const { origin, destination, smallerDate, biggerDate } = queryParams;
-
-    const result = await db.query(
-        `SELECT id, origin, destination, date
-       FROM flights
-       WHERE
-         (:origin IS NULL OR origin = :origin) AND
-         (:destination IS NULL OR destination = :destination)
-       ORDER BY date;`
-    );
-    console.log(result.rows)
-    return result.rows;
+async function filterFlights ( origin, destination ) {
+  const query = await db.query(
+    `
+    SELECT
+      f.id,
+      orig.name AS origin,
+      dest.name AS destination,
+      TO_CHAR(f.date, 'DD-MM-YYYY') AS date
+    FROM
+      flights AS f
+    JOIN
+      cities AS orig ON f.origin = orig.id
+    JOIN
+      cities AS dest ON f.destination = dest.id
+    WHERE
+      ($1::VARCHAR IS NULL OR orig.name = $1::VARCHAR)
+      AND ($2::VARCHAR IS NULL OR dest.name = $2::VARCHAR)
+    ORDER BY
+      f.date;
+    `,
+    [origin, destination]
+  );
+  return query;
 }
-
 export const flightsRepository = { filterFlights, create, exists }
-// export const flightsRepository = { allFlights, create, exists}

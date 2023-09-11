@@ -1,5 +1,6 @@
 import { errors } from "../errors/errors.js"
 import { flightsRepository } from "../repositories/flights.repositories.js"
+import dayjs from "dayjs"
 
 async function create(origin, destination, date) {
 
@@ -11,10 +12,10 @@ async function create(origin, destination, date) {
 
   if (!cityDestination || !cityOrigin) throw errors.notFound()
 
-  await flightsRepository.create(origin, destination, convertDate(date))
+  await flightsRepository.create(origin, destination, convertDate(date, {decode: false}))
 }
 
-function convertDate(inputDate) {
+function convertDate(inputDate, {decode = false}) {
   const parts = inputDate.split('-');
 
   if (parts.length === 3) {
@@ -22,40 +23,38 @@ function convertDate(inputDate) {
     const month = parts[1];
     const year = parts[2];
 
-    const newDate = `${year}-${month}-${day}`;
+    if(decode) 
+      return `${day}-${month}-${year}`;
+ 
+    return `${year}-${month}-${day}`;
 
-    return newDate;
   } else {
     return null;
   }
 }
 
-// async function getAllFlights() {
-//   const allFlights = await flightsRepository.allFlights()
-//   return allFlights;
-// }
+async function getFlights(origin, destination, smallerDate, biggerDate) {
 
-async function getFilteredFlights(queryParams) {
-  const filteredFlights = flightsRepository.filterFlights(queryParams);
-  return filteredFlights;
+  if ((!smallerDate && biggerDate) || (smallerDate && !biggerDate)) {
+    throw { type: "unprocessableEntity", message: "Data inválida" };
+  }
+  if (smallerDate && biggerDate && smallerDate > biggerDate) {
+    throw { type: "badRequest", message: "Data inválida" };
+  }
+
+  const resp = await flightsRepository.filterFlights(origin ? origin.trim() : null, destination ? destination.trim() : null);
+
+  return resp.rows
+    .filter((flight) => 
+      (!smallerDate || convertDate(flight.date, {decode: true}) >= smallerDate) &&
+      (!biggerDate || convertDate(flight.date, {decode: true}) <= biggerDate)
+    ).map((flight) => ({
+      id: flight.id,
+      origin: flight.origin,
+      destination: flight.destination,
+      date: convertDate(flight.date, {decode: true})
+    }));
 }
 
 
-// function filterFlights(allFlights, queryParams) {
-//   let filteredFlights = [...allFlights];
-
-//   if (queryParams.origin) {
-//     filteredFlights = filteredFlights.filter(flight => flight.origin === queryParams.origin);
-//   }
-
-//   if (queryParams.destination) {
-//     filteredFlights = filteredFlights.filter(flight => flight.destination === queryParams.destination);
-//   }
-//   filteredFlights.sort((a, b) => new Date(a.date) - new Date(b.date));
-//   console.log(filteredFlights)
-
-//   return filteredFlights;
-// }
-
-
-export const flightsService = { create,  getFilteredFlights }
+export const flightsService = { create, getFlights }

@@ -11,38 +11,24 @@ async function create(firstName, lastName) {
 
 
 //TIPO GET
-async function getPassengersTravels() {
+async function getPassengersTravels(firstName, lastName) {
    const allPassengers =  await db.query(
         `SELECT
-        CONCAT(p.firstname, ' ', p.lastname) AS passenger,
-        COUNT(t.flightid) AS travels
-    FROM
-        passengers p
-        JOIN travels t ON p.passengerid = t.passengerid
-    WHERE
-        (:name IS NULL OR (p.firstname ILIKE '%' || :name || '%' OR p.lastname ILIKE '%' || :name || '%'))
-    GROUP BY
-        passenger
-    ORDER BY
-        travels DESC
-    LIMIT
-        10;`
+            CONCAT(p.firstname, ' ', p.lastname) AS passenger,
+            COUNT(t.flightid) AS travels
+        FROM
+            passengers p
+            JOIN travels t ON p.id = t.passengerid
+        WHERE
+            ($1::VARCHAR IS NULL OR (p.firstname ILIKE $1 AND p.lastname ILIKE $2))
+        GROUP BY
+            passenger
+        ORDER BY
+            travels DESC
+        LIMIT
+            10;`,
+        [firstName, lastName]
     )
-    return allPassengers
+    return allPassengers.rows
 }
-
-// - [ ]  Deve retornar a relação de todos os passageiros com suas respectivas quantidades de viagens:
-
-//     ```sql
-//     [
-//     	{ passenger: "Full Name", travels: 10 },
-//     	{ passenger: "Full Name 2", travels: 5 },
-//     	// ...
-//     ]
-//     ```
-
-// - [ ]  O resultado sempre deve vir ordenado por viagens, do maior para para o menor.
-// - [ ]  O máximo de resultados que podem ser obtidos em uma requisição são `10`. Caso a quantidade ultrapasse, o sistema deve retornar erro com status code `500` `Internal Server Error` e a mensagem `Too many results`.
-// - [ ]  A rota deve aceitar a query `name` para filtrar a busca (`/passengers/travels?name=Diego`)
-//     - [ ]  A busca deve ser feita com `ILIKE %NOME%`.  Exemplo: `/passengers/travels?name=Teste` :
 export const passengersRepository = { create, getPassengersTravels }
