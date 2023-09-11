@@ -9,13 +9,11 @@ async function create(req, res) {
     res.sendStatus(httpStatus.CREATED)
 }
 
-
 async function getTravels() {
-    const page = res.locals.page;
+    const { name } = req.query;
+    const passengers = await passengersService.getPassengersTravels(name);
+    return res.send(passengers);
 
 }
-
-
-
 
 export const passengersController = { create, getTravels }

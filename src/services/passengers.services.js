@@ -7,8 +7,11 @@ async function create(firstName, lastName) {
 }
 
 
-async function getTravels() {
-    const page = res.locals.page;
+async function getTravelsgetPassengersTravels(name){
+    const passengers = await passengersRepository.getPassengersTravels(name);
+    // Implemente aqui a lógica para ordenar os passageiros por viagens (decrescente)
+    // e limitar o número de resultados a 10, conforme especificado.
+    return passengers;
 
 }
-export const passengersService = { create, getTravels }
+export const passengersService = { create, getTravelsgetPassengersTravels }

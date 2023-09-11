@@ -8,9 +8,15 @@ async function create(req, res) {
         res.sendStatus(httpStatus.CREATED)
       }
 
+async function allFlights(req, res) {
+  const queryParams = req.query;
 
+  // const allFlights = await flightsService.getAllFlights();
+  // console.log(allFlights)
+  //   console.log(queryParams)
+  const filteredFlights = flightsService.getFilteredFlights(queryParams);
 
-async function allFlights() {
+  res.status(httpStatus.OK).send(filteredFlights);
 
 }
 

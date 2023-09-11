@@ -19,17 +19,28 @@ async function exists(value, id) {
 
 
 
-async function allFlights() {
+// async function allFlights() {
+//     const { rows } = await db.query(
+//         `SELECT * FROM flights;`
+//     )
+//     return rows
+// }
+
+
+async function filterFlights(queryParams) {
+    const { origin, destination, smallerDate, biggerDate } = queryParams;
+
     const result = await db.query(
-        `SELECT * FROM flights
-        ORDER BY date DESC;`
-    )
-
-    return result
-
+        `SELECT id, origin, destination, date
+       FROM flights
+       WHERE
+         (:origin IS NULL OR origin = :origin) AND
+         (:destination IS NULL OR destination = :destination)
+       ORDER BY date;`
+    );
+    console.log(result.rows)
+    return result.rows;
 }
 
-
-// { id: 2, origin: "Salvador", destination: "Fortaleza", date: "27-07-2023"},
-// O resultado sempre deve vir ordenado por datas, da mais próxima para a mais distante.
-export const flightsRepository = { allFlights, create, exists }
+export const flightsRepository = { filterFlights, create, exists }
+// export const flightsRepository = { allFlights, create, exists}
