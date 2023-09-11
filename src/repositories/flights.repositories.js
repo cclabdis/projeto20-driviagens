@@ -1,7 +1,6 @@
 import { db } from "../database/database.connection.js"
 
 
-//tipo post
 async function create(origin, destination, date) {
     await db.query(
         `INSERT INTO flights (origin, destination, date) VALUES($1, $2, $3);`,
@@ -9,19 +8,17 @@ async function create(origin, destination, date) {
     )
 }
 
-// - [ ]  A cidades de origem e destino devem ser ids de cidades que existem na tabela `cities`. Caso não sejam, emita o erro `404 (Not Found)`.
-// - [ ]  Origem e destino devem ser diferentes. Caso não seja, emita o erro `409 (Conflict)`.
-// - [ ]  A data do voo deve ser maior do que a data atual, caso não seja, emita o erro `422 (Unprocessable Entity)`
-
-async function exists(cities) {
-    await db.query(
-        'SELECT COUNT(*) FROM cities WHERE id = $1;',
-        [cities]
-    )
+async function exists(value, id) {
+    const result = await db.query(
+        `SELECT COUNT(*) FROM cities WHERE ${id} = $1;`,
+        [value]
+    );
+    console.log(result)
+    return result.rows[0].count > 0;
 }
 
 
-//tipo get
+
 async function allFlights() {
     const result = await db.query(
         `SELECT * FROM flights

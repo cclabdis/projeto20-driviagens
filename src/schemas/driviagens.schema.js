@@ -40,7 +40,7 @@ export const citiesSchema = joi.object({
      }),
      date: joi.date().format("DD-MM-YYYY").required().messages({
          'date.base': `"Lançamento" é um campo do tipo data.`,
-         'date.format': `O formato da data de lançamento deve ser: AAAA-MM-DD.`,
+         'date.format': `O formato da data de lançamento deve ser: DD-MM-YYYY.`,
          'any.required': `O campo "lançamento" é obrigatório.`
      })
  })
