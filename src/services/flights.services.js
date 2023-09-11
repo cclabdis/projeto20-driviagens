@@ -12,7 +12,8 @@ async function create(origin, destination, date) {
   const cityDestination = await flightsRepository.exists(destination, 'id');
 
 
-  if (!cityDestination || !cityOrigin) throw errors.notFound()
+  if (!cityDestination)  throw errors.notFound("Cidade de destino")
+  if(!cityOrigin) throw errors.notFound("Cidade de origem")
 
   await flightsRepository.create(origin, destination, convertDate(date, {decode: false}))
 }

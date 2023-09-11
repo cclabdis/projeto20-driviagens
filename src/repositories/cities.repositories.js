@@ -7,11 +7,15 @@ async function create(name) {
     )
 }
 
+
 async function exists(name) {
-    await db.query(
-        'SELECT COUNT(*) FROM cities WHERE name = $1;',
-        [name]
-    )
-}
+    const result = await db.query(
+      `SELECT * FROM cities WHERE name = $1;`,
+      [name]
+       )
+    return result.rows[0].count > 0;
+  }
+
+
 
 export const citiesRepository = { create, exists }
