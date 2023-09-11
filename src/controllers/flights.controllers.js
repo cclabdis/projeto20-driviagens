@@ -9,7 +9,8 @@ async function create(req, res) {
       }
 
 async function allFlights(req, res) {
-  const { origin, destination, "smaller-date": smallerDate, "bigger-date": biggerDate, page } = req.query;
+  const { origin, destination, "smaller-date": smallerDate, "bigger-date": biggerDate} = req.query;
+  const { page } = res.locals
 
   const flights = await flightsService.getFlights( origin, destination, smallerDate, biggerDate, page );
   res.status(httpStatus.OK).send(flights);
