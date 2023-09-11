@@ -22,7 +22,7 @@ export const citiesSchema = joi.object({
     name: joi.string().min(2).max(50).required().messages({
          'string.base': `"Name" é um campo do tipo texto.`,
          'string.min': `"Name" deve ter no mínimo 2 caracteres.`,
-         'string.max': `"Name" deve ter no máximo 100 caracteres.`,
+         'string.max': `"Name" deve ter no máximo 50 caracteres.`,
          'any.required': `O campo "name" é obrigatório.`
      })
 })

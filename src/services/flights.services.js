@@ -2,6 +2,9 @@ import { errors } from "../errors/errors.js"
 import { flightsRepository } from "../repositories/flights.repositories.js"
 
 async function create(origin, destination, date) {
+  const currentDate = new Date();
+      
+  if (date <= currentDate)  throw errors.unprocessableEntity()
 
   if (origin === destination) throw errors.conflict()
 

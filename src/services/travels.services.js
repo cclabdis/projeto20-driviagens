@@ -6,7 +6,13 @@ async function create(passengerId, flightId) {
     const passengerExists = await travelsRepository.passengerExists(passengerId, 'id');
     const flightExists = await travelsRepository.flightsExists(flightId, 'id');
 
-    if (!passengerExists || !flightExists) throw errors.notFound()
+    if (!passengerExists) {
+        throw errors.notFound("passengerId");
+    }
+
+    if (!flightExists) {
+        throw errors.notFound("flightId");
+    }
 
     await travelsRepository.create(passengerId, flightId)
 
