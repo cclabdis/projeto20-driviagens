@@ -7,7 +7,6 @@ async function create(name) {
     )
 }
 
-
 async function exists(name) {
     const result = await db.query(
       `SELECT * FROM cities WHERE name = $1;`,
@@ -15,7 +14,5 @@ async function exists(name) {
     )
     return result.rows.length > 0;
   }
-
-
 
 export const citiesRepository = { create, exists }

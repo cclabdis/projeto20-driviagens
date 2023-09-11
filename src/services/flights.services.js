@@ -1,12 +1,13 @@
+import dayjs from "dayjs";
 import { errors } from "../errors/errors.js"
 import { flightsRepository } from "../repositories/flights.repositories.js"
 
 async function create(origin, destination, date) {
-  const currentDate = new Date();
-      
-  if (date <= currentDate)  throw errors.unprocessableEntity()
+  const currentDate = dayjs().format('DD MM YYYY')
 
-  if (origin === destination) throw errors.conflict()
+  if (dayjs(currentDate).isAfter(date))  throw errors.unprocessableEntity("dayjs")
+
+  if (origin === destination) throw errors.conflict("origin")
 
   const cityOrigin = await flightsRepository.exists(origin, 'id');
   const cityDestination = await flightsRepository.exists(destination, 'id');

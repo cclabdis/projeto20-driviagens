@@ -16,14 +16,12 @@ function notFound(resource = "Item") {
 function conflict(resource = "Item") {
     return {
         type: "conflict",
-        message: `${resource} já existe e não pode ser duplicado!`
-    }
-}
-
+        message: resource==="Item" ? `Item já existe e não pode ser duplicado!` : "Origem e o destino tem que ser distintos"  
+}}
 function unprocessableEntity ( resource = "Item", err ) {
     return {
         type: "unprocessableEntity",
-        message: resource === "Flight" ? "A data do vôo deve ser maior que a data atual" : resource === "Schema" ? err : resource === "Dates" ? "bigger-date e smaller-date devem ser passados juntos" : ""
+        message: resource === "Flight" ? "A data do vôo deve ser maior que a data atual" : resource === "Schema" ? err : resource === "Dates" ? "bigger-date e smaller-date devem ser passados juntos" : "" ? err : resource === "dayjs" ? "A data tem que ser depois do dia de hoje" : ""
     }
 }
 
