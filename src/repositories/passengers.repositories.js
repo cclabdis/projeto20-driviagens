@@ -31,4 +31,4 @@ async function getTravels() {
 // - [ ]  O máximo de resultados que podem ser obtidos em uma requisição são `10`. Caso a quantidade ultrapasse, o sistema deve retornar erro com status code `500` `Internal Server Error` e a mensagem `Too many results`.
 // - [ ]  A rota deve aceitar a query `name` para filtrar a busca (`/passengers/travels?name=Diego`)
 //     - [ ]  A busca deve ser feita com `ILIKE %NOME%`.  Exemplo: `/passengers/travels?name=Teste` :
-const passengersRepositories = { create, getTravels }
+export const passengersRepository = { create, getTravels }
