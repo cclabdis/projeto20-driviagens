@@ -1,6 +1,5 @@
 import { errors } from "../errors/errors.js"
 import { flightsRepository } from "../repositories/flights.repositories.js"
-import dayjs from "dayjs"
 
 async function create(origin, destination, date) {
 
@@ -36,10 +35,10 @@ function convertDate(inputDate, {decode = false}) {
 async function getFlights(origin, destination, smallerDate, biggerDate) {
 
   if ((!smallerDate && biggerDate) || (smallerDate && !biggerDate)) {
-    throw { type: "unprocessableEntity", message: "Data inválida" };
+    throw errors.unprocessableEntity("Data inválida")
   }
   if (smallerDate && biggerDate && smallerDate > biggerDate) {
-    throw { type: "badRequest", message: "Data inválida" };
+    throw errors.badRequest();
   }
 
   const resp = await flightsRepository.filterFlights(origin ? origin.trim() : null, destination ? destination.trim() : null);

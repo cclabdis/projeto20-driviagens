@@ -1,6 +1,5 @@
 import { db } from "../database/database.connection.js"
 
-//tipo post
 async function create(firstName, lastName) {
     await db.query(
         `INSERT INTO passengers (firstName, lastName) VALUES($1, $2);`,
@@ -9,9 +8,7 @@ async function create(firstName, lastName) {
 
 }
 
-
-//TIPO GET
-async function getPassengersTravels(firstName, lastName) {
+async function getPassengersTravels(name) {
    const allPassengers =  await db.query(
         `SELECT
             CONCAT(p.firstname, ' ', p.lastname) AS passenger,
@@ -20,14 +17,14 @@ async function getPassengersTravels(firstName, lastName) {
             passengers p
             JOIN travels t ON p.id = t.passengerid
         WHERE
-            ($1::VARCHAR IS NULL OR (p.firstname ILIKE $1 AND p.lastname ILIKE $2))
+            ($1::VARCHAR IS NULL OR (CONCAT(p.firstname, ' ', p.lastname) ILIKE $1))
         GROUP BY
             passenger
         ORDER BY
             travels DESC
         LIMIT
             10;`,
-        [firstName, lastName]
+        [name]
     )
     return allPassengers.rows
 }

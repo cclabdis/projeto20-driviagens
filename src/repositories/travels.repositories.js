@@ -5,7 +5,6 @@ async function create(passengerId, flightId) {
         `INSERT INTO travels (passengerId, flightId) VALUES ($1, $2); `,
         [passengerId, flightId]
     )
-
 }
 
 async function passengerExists(value, id) {

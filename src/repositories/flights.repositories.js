@@ -12,8 +12,7 @@ async function exists(value, id) {
     const result = await db.query(
         `SELECT COUNT(*) FROM cities WHERE ${id} = $1;`,
         [value]
-    );
-    console.log(result)
+    )
     return result.rows[0].count > 0;
 }
 
@@ -39,6 +38,6 @@ async function filterFlights ( origin, destination ) {
     `,
     [origin, destination]
   );
-  return query;
+  return query
 }
 export const flightsRepository = { filterFlights, create, exists }
