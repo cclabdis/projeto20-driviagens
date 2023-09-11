@@ -2,21 +2,24 @@ import { db } from "../database/database.connection.js"
 
 
 async function create(origin, destination, date) {
-    await db.query(
-        `INSERT INTO flights (origin, destination, date) VALUES($1, $2, $3);`,
-        [origin, destination, date]
-    )
+  await db.query(
+    `INSERT INTO flights (origin, destination, date) VALUES($1, $2, $3);`,
+    [origin, destination, date]
+  )
 }
 
 async function exists(value, id) {
-    const result = await db.query(
-        `SELECT COUNT(*) FROM cities WHERE ${id} = $1;`,
-        [value]
-    )
-    return result.rows[0].count > 0;
+  const result = await db.query(
+    `SELECT COUNT(*) FROM cities WHERE ${id} = $1;`,
+    [value]
+  )
+  return result.rows[0].count > 0;
 }
 
-async function filterFlights ( origin, destination ) {
+async function filterFlights(origin, destination, page) {
+  const pageSize = 10
+  const offset = (page - 1) * pageSize
+  
   const query = await db.query(
     `
     SELECT
@@ -34,9 +37,13 @@ async function filterFlights ( origin, destination ) {
       ($1::VARCHAR IS NULL OR orig.name = $1::VARCHAR)
       AND ($2::VARCHAR IS NULL OR dest.name = $2::VARCHAR)
     ORDER BY
-      f.date;
-    `,
-    [origin, destination]
+      f.date
+      LIMIT
+          $3
+      OFFSET
+          $4;`
+    ,
+    [origin, destination, pageSize, offset]
   );
   return query
 }

@@ -32,7 +32,7 @@ function convertDate(inputDate, {decode = false}) {
   }
 }
 
-async function getFlights(origin, destination, smallerDate, biggerDate) {
+async function getFlights(origin, destination, smallerDate, biggerDate, page) {
 
   if ((!smallerDate && biggerDate) || (smallerDate && !biggerDate)) {
     throw errors.unprocessableEntity("Data inválida")
@@ -41,7 +41,7 @@ async function getFlights(origin, destination, smallerDate, biggerDate) {
     throw errors.badRequest();
   }
 
-  const resp = await flightsRepository.filterFlights(origin ? origin.trim() : null, destination ? destination.trim() : null);
+  const resp = await flightsRepository.filterFlights(origin ? origin.trim() : null, destination ? destination.trim() : null, page);
 
   return resp.rows
     .filter((flight) => 
