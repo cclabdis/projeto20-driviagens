@@ -7,5 +7,4 @@ async function getTravels() {
     const page = res.locals.page;
 
 }
-
-const passengersService = {create, getTravels}
+export const passengersService = {create, getTravels}

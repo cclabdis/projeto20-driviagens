@@ -12,4 +12,12 @@ function notFound(resource = "Item") {
     }
 }
 
-export const errors = { joi, notFound }
+
+function conflict(resource = "Item") {
+    return {
+        type: "conflict",
+        message: `${resource} já existe e não pode ser duplicado!`
+    }
+}
+
+export const errors = { joi, notFound, conflict };

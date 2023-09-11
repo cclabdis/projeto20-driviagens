@@ -1,17 +1,16 @@
-import { flightsRepository } from "../repositories/flights.repositories"
+import { errors } from "../errors/errors.js"
+import { flightsRepository } from "../repositories/flights.repositories.js"
 
 async function create(origin, destination, date) {
+  console.log(origin, destination, date)
 
-    if (origin === destination) {
-        return res.status(409).send("Conflict");
-      }
+    if (origin === destination)  throw errors.conflict()
+    //aqui [e conflito]
 
     const cityOrigin = await flightsRepository.exists(origin)
     const cityDestination = await flightsRepository.exists(destination)
 
-    if (!cityDestination || !cityOrigin) {
-        return res.status(404).send("notFound");
-      }
+    if (!cityDestination || !cityOrigin)  throw errors.notFound()
   
     await flightsRepository.create(origin, destination, date)
 }
@@ -22,4 +21,4 @@ async function allFlights() {
 
 }
 
-const flightsService = { allFlights, create}
+export const flightsService = { allFlights, create}

@@ -30,6 +30,10 @@ export const citiesSchema = joi.object({
 //na descricao do projeto no post cities nao descreve se é obrigatório
 
  export const flightsSchema = joi.object({
+    origin: joi.number().required().messages({
+        'number.base': `"destination" é um campo do tipo número referente a uma cidade.`,
+        'any.required': `O campo "nome" é obrigatório.`
+    }),
     destination: joi.number().required().messages({
          'number.base': `"destination" é um campo do tipo número referente a uma cidade.`,
          'any.required': `O campo "nome" é obrigatório.`
