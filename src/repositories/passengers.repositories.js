@@ -8,7 +8,10 @@ async function create(firstName, lastName) {
 
 }
 
-async function getPassengersTravels(name) {
+async function getPassengersTravels(name, page) {
+    const pageSize = 10
+    const offset = (page - 1) * pageSize
+
    const allPassengers =  await db.query(
         `SELECT
             CONCAT(p.firstname, ' ', p.lastname) AS passenger,
@@ -23,8 +26,10 @@ async function getPassengersTravels(name) {
         ORDER BY
             travels DESC
         LIMIT
-            10;`,
-        [name]
+            $2
+        OFFSET
+            $3;`,
+        [name, pageSize, offset]
     )
     return allPassengers.rows
 }

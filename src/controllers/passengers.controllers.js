@@ -9,8 +9,8 @@ async function create(req, res) {
 }
 
 async function getTravels(req, res) {
-    const { name } = req.query
-    const passengers = await passengersService.getPassengersTravels(name)
+    const { name, page } = req.query
+    const passengers = await passengersService.getPassengersTravels(name, page)
     res.status(httpStatus.OK).send(passengers)
 }
 

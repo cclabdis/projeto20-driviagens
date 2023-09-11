@@ -5,7 +5,7 @@ function joi(message) {
     }
 }
 
-function notFound(resource = "Item") {
+function notFound(resource = "Id") {
     return {
         type: "notFound",
         message: `${resource} não foi encontrado!`
