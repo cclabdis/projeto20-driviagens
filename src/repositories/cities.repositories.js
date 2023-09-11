@@ -12,8 +12,8 @@ async function exists(name) {
     const result = await db.query(
       `SELECT * FROM cities WHERE name = $1;`,
       [name]
-       )
-    return result.rows[0].count > 0;
+    )
+    return result.rows.length > 0;
   }
 
 
