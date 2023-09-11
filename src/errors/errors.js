@@ -30,7 +30,7 @@ function unprocessableEntity ( resource = "Item", err ) {
 function badRequest ( resource = "Item" ) {
     return {
         type: "badRequest",
-        message: resource==="Date" ? `smaller-date deve ser menor que bigger-date` : ""
+        message: resource==="Date" ? `smaller-date deve ser menor que bigger-date` : "Invalid page value"
     }
 }
 

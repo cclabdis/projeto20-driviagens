@@ -33,6 +33,7 @@ function convertDate(inputDate, {decode = false}) {
 }
 
 async function getFlights(origin, destination, smallerDate, biggerDate, page) {
+  
 
   if ((!smallerDate && biggerDate) || (smallerDate && !biggerDate)) {
     throw errors.unprocessableEntity("Data inválida")

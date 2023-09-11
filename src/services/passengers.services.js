@@ -5,6 +5,7 @@ async function create(firstName, lastName) {
 }
 
 async function getPassengersTravels(name, page) {
+    
     return await passengersRepository.getPassengersTravels(name, page);;
 }
 
